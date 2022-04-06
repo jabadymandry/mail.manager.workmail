@@ -25,11 +25,7 @@ pipeline {
         stage('Create email') {
             steps {
                 echo "Generate password for ${UserToCreate}"
-            }
-            steps {
                 echo "Creating ${UserToCreate} email address"
-            }
-            steps {
                 echo "Creating ${UserToCreate} email address"
             }
         }
