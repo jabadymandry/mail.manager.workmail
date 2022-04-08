@@ -1,6 +1,6 @@
 #_OrganizationId='m-c5593a91faa84f8cad7721c01b0f4b90'
 #_DomainName='prodigy.gov.mg'
-#_MailAddressFile='emails.csv'
+_MailAddressFile='emails.csv'
 #_Env='WORKMAIL'
 #_SenderMailAddress='bruno@prodigy.gov.mg'
 
