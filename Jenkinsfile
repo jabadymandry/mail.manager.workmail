@@ -37,12 +37,12 @@ pipeline {
                 }
             }
             steps {
-                echo "${Organisation_Id}"
-                echo "${FullName},${EmailToCreate},${SendInfoToEmail}"
+                //echo "${Organisation_Id}"
+                //echo "${FullName},${EmailToCreate},${SendInfoToEmail}"
                 script {
                     writeFile file:'emails.csv', text:"${FullName},${EmailToCreate},${SendInfoToEmail}"
                 }
-                sh 'printenv'
+                //sh 'printenv'
                 sh 'python3 create_user.py'
             }
         }
