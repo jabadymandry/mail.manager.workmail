@@ -18,12 +18,12 @@ def TestConnect2MailServer(verbose = False, debug = False):
                 client_mail.connect(host=varsfile._SMTP_SERVER, port=varsfile._SMTP_PORT)
                 client_mail.ehlo()
                 if(verbose == True and debug == True):
-                    print("Connexion en cours, username: {0} / password: {1}".format(varsfile._SenderMailAddress, os.getenv('SMTP_PASS')))
+                    print("Connexion en cours, username: {0} / password: {1}".format(os.getenv('SenderEmailAddress'), os.getenv('SMTP_PASS')))
                 elif (verbose == True):
-                    print("Connexion en cours, username: {0} / password: {1}".format(varsfile._SenderMailAddress, "*********************"))
+                    print("Connexion en cours, username: {0} / password: {1}".format(os.getenv('SenderEmailAddress'), "*********************"))
 
                 # Authenticate with the client_mail
-                return client_mail.login(varsfile._SenderMailAddress, os.getenv('SMTP_PASS'))
+                return client_mail.login(os.getenv('SenderEmailAddress'), os.getenv('SMTP_PASS'))
     except Exception as err:
         print("Erreur de connexion au serveur: {0}".format(err))
 
@@ -51,7 +51,7 @@ def SendEmailInfo(_NewMailAddress, _NewPassword, _ToMailAddress, _SenderMailAddr
         # Declare message elements
         msg['From'] = _SenderMailAddress
         msg['To'] = _ToMailAddress
-        msg['Subject'] = "[BIENVENUE] - VOTRE MAIL {0}".format(varsfile._DomainName)
+        msg['Subject'] = "[BIENVENUE] - VOTRE MAIL {0}".format(os.getenv('DomainName'))
 
         # Add the message body to the object instance
         msg.attach(MIMEText(message, 'plain'))
@@ -63,7 +63,7 @@ def SendEmailInfo(_NewMailAddress, _NewPassword, _ToMailAddress, _SenderMailAddr
                 client_mail.connect(host=varsfile._SMTP_SERVER, port=varsfile._SMTP_PORT)
                 client_mail.ehlo()
                 # Authenticate with the client_mail
-                client_mail.login(os.getenv('SendEmailAddress'), os.getenv('SMTP_PASS'))
+                client_mail.login(os.getenv('SenderEmailAddress'), os.getenv('SMTP_PASS'))
                 # Send the message
                 client_mail.sendmail(msg['From'], msg['To'], msg.as_string())
             print ("Successfully sent email to: {0}".format(msg['To']))
@@ -72,7 +72,7 @@ def SendEmailInfo(_NewMailAddress, _NewPassword, _ToMailAddress, _SenderMailAddr
 
         try:
             with imaplib.IMAP4_SSL(varsfile._IMAP_SERVER, varsfile._IMAP_PORT) as imap:
-                imap.login(os.getenv('SendEmailAddress'), os.getenv('SMTP_PASS'))
+                imap.login(os.getenv('SenderEmailAddress'), os.getenv('SMTP_PASS'))
                 result = imap.append('"Sent Items"', '', imaplib.Time2Internaldate(time.time()), msg.as_string().encode('utf8'))
             print(result)
         except Exception as err:
