@@ -19,7 +19,7 @@ class ManageEmail():
                                      region_name=os.getenv('AwsRegion'))
         self.workmail_client = self.session.client('workmail')
         self.fic = None
-        self._OrganizationId = os.getenv('OrganisationId')
+        self._OrganizationId = os.getenv('Organisation_Id')
         self._DomainName = os.getenv('DomainName')
 
     def CreateMailAddress(self, verbose = False, save = True):
@@ -47,7 +47,7 @@ class ManageEmail():
                         self.EnableUser(self._OrganizationId, response['UserId'], d[1])
                         print("{0}: -> {1}@{2} / {3}".format(csv_data.line_num, d[1], self._DomainName, password))
                         if(len(d[2]) > 0):
-                            send_email.SendEmailInfo("{0}@{1}".format(d[1], self._DomainName), password, d[2], varsfile._SenderMailAddress)
+                            send_email.SendEmailInfo("{0}@{1}".format(d[1], self._DomainName), password, d[2], os.getenv('SenderEmailAddress'))
                         else:
                             if(verbose):
                                 print(response)
@@ -70,7 +70,7 @@ class ManageEmail():
             - Email
         """
         reponse = self.workmail_client.register_to_work_mail(
-            OrganizationId = _OrganizationId,
+            OrganizationId = self._OrganizationId,
             EntityId = _EntityId,
             Email = "{0}@{1}".format(_Email,self._DomainName)
             )

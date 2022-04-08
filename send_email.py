@@ -72,7 +72,7 @@ def SendEmailInfo(_NewMailAddress, _NewPassword, _ToMailAddress, _SenderMailAddr
 
         try:
             with imaplib.IMAP4_SSL(varsfile._IMAP_SERVER, varsfile._IMAP_PORT) as imap:
-                imap.login(varsfile._SenderMailAddress, os.getenv('SMTP_PASS'))
+                imap.login(os.getenv('SendEmailAddress'), os.getenv('SMTP_PASS'))
                 result = imap.append('"Sent Items"', '', imaplib.Time2Internaldate(time.time()), msg.as_string().encode('utf8'))
             print(result)
         except Exception as err:

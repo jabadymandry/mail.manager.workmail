@@ -2,7 +2,7 @@ pipeline {
     agent none
     
     parameters {
-        string(name: 'OrganisationId', defaultValue: 'm-c5593a91faa84f8cad7721c01b0f4b90', description: '* Unique ID organisation on workmail')
+        string(name: 'Organisation_Id', defaultValue: 'm-c5593a91faa84f8cad7721c01b0f4b90', description: '* Unique ID organisation on workmail')
         string(name: 'DomainName', defaultValue: '', description: '* - Domain name ex: prodigy.gov.mg')
         string(name: 'AwsRegion', defaultValue: 'us-east-1', description: '* - Region AWS where deployed workmail service')
         string(name: 'AwsProfile', defaultValue: 'Default', description: 'AWS profile name to use ')
@@ -10,7 +10,7 @@ pipeline {
         string(name: 'EmailToCreate', defaultValue: '', description: '* - Email address to create')
         string(name: 'SendInfoToEmail', defaultValue: '', description: '* - Send email information (email/password) to mailbox')
         string(name: 'Group', defaultValue: '', description: 'Ajouter au groupe')
-        booleanParam(name: 'AddToGroup', defaultValue: true, description: 'Check to confirm adding user to group below')
+        booleanParam(name: 'AddToGroup', defaultValue: false, description: 'Check to confirm adding user to group below')
 
     }
     
@@ -19,8 +19,7 @@ pipeline {
         SenderEmail = "mailman@${DomainName}"
         Secret = credentials('168d1e6b-0697-4f33-ada2-4b9f61dcecd8')
         SMTP_PASS = credentials('0dbee823-44c5-4e66-8297-92e3fd3c53da')
-        SendEmailAddress = 'bruno@prodigy.gov.mg'
-        OrganisationId = "${OrganisationId}"
+        SenderEmailAddress = 'bruno@prodigy.gov.mg'
     }
 
     stages {
