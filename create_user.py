@@ -32,7 +32,7 @@ class ManageEmail():
 
         with open(varsfile._MailAddressFile, newline='') as csv_file:
             # Format CSV: DisplayName,NewEmail,OldEmail
-            csv_data = csv.reader(csv_file, delimiter=';')
+            csv_data = csv.reader(csv_file, delimiter=',')
             for d in csv_data:
                 password = GenPass()
                 try:
