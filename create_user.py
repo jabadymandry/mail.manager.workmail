@@ -45,7 +45,8 @@ class ManageEmail():
 
                     if(response['ResponseMetadata']['HTTPStatusCode'] == 200):
                         self.EnableUser(self._OrganizationId, response['UserId'], d[1])
-                        print("{0}: -> {1}@{2} / {3}".format(csv_data.line_num, d[1], self._DomainName, password))
+                        if verbose:
+                            print("{0}: -> {1}@{2} / {3}".format(csv_data.line_num, d[1], self._DomainName, password))
                         if(len(d[2]) > 0):
                             send_email.SendEmailInfo("{0}@{1}".format(d[1], self._DomainName), password, d[2], os.getenv('SenderEmailAddress'))
                         else:
