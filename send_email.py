@@ -63,7 +63,7 @@ def SendEmailInfo(_NewMailAddress, _NewPassword, _ToMailAddress, _SenderMailAddr
                 client_mail.connect(host=varsfile._SMTP_SERVER, port=varsfile._SMTP_PORT)
                 client_mail.ehlo()
                 # Authenticate with the client_mail
-                client_mail.login(varsfile._SenderMailAddress, os.getenv('SMTP_PASS'))
+                client_mail.login(os.getenv('SendEmailAddress'), os.getenv('SMTP_PASS'))
                 # Send the message
                 client_mail.sendmail(msg['From'], msg['To'], msg.as_string())
             print ("Successfully sent email to: {0}".format(msg['To']))

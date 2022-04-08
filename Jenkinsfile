@@ -19,6 +19,7 @@ pipeline {
         SenderEmail = "mailman@${DomainName}"
         Secret = credentials('168d1e6b-0697-4f33-ada2-4b9f61dcecd8')
         SMTP_PASS = credentials('0dbee823-44c5-4e66-8297-92e3fd3c53da')
+        SendEmailAddress = 'bruno@prodigy.gov.mg'
     }
 
     stages {
