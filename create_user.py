@@ -19,6 +19,9 @@ class ManageEmail():
                                      region_name=os.getenv('AwsRegion'))
         self.workmail_client = self.session.client('workmail')
         self.fic = None
+        self._OrganizationId = os.getenv('OrganisationId')
+        self._DomainName = os.getenv('DomainName')
+        self.
 
     def CreateMailAddress(self, verbose = False, save = True):
         """
@@ -35,27 +38,27 @@ class ManageEmail():
                 password = GenPass()
                 try:
                     response = self.workmail_client.create_user(
-                                    OrganizationId= varsfile._OrganizationId,
+                                    OrganizationId= self._OrganizationId,
                                     Name=d[1],
                                     DisplayName=d[0] if len(d[0]) > 0 else d[1],
                                     Password=password,
                                 )
 
                     if(response['ResponseMetadata']['HTTPStatusCode'] == 200):
-                        self.EnableUser(varsfile._OrganizationId, response['UserId'], d[1])
-                        print("{0}: -> {1}@{2} / {3}".format(csv_data.line_num, d[1], varsfile._DomainName, password))
+                        self.EnableUser(self._OrganizationId, response['UserId'], d[1])
+                        print("{0}: -> {1}@{2} / {3}".format(csv_data.line_num, d[1], self._DomainName, password))
                         if(len(d[2]) > 0):
-                            send_email.SendEmailInfo("{0}@{1}".format(d[1], varsfile._DomainName), password, d[2], varsfile._SenderMailAddress)
+                            send_email.SendEmailInfo("{0}@{1}".format(d[1], self._DomainName), password, d[2], varsfile._SenderMailAddress)
                         else:
                             if(verbose):
                                 print(response)
                                 print("{0} nouvel adresse email".format(d[1]))
                         
                     if(save == True):
-                        data = "{0}@{1};{2}\n".format(d[1], varsfile._DomainName, password)
+                        data = "{0}@{1};{2}\n".format(d[1], self._DomainName, password)
                         self.SaveToFile(data)
                 except self.workmail_client.exceptions.NameAvailabilityException:
-                    print("/!\ Compte e-mail  \"{0}@{1}\" existe deja!".format(d[1], varsfile._DomainName))
+                    print("/!\ Compte e-mail  \"{0}@{1}\" existe deja!".format(d[1], self._DomainName))
                     pass
 
 
@@ -70,7 +73,7 @@ class ManageEmail():
         reponse = self.workmail_client.register_to_work_mail(
             OrganizationId = _OrganizationId,
             EntityId = _EntityId,
-            Email = "{0}@{1}".format(_Email,varsfile._DomainName)
+            Email = "{0}@{1}".format(_Email,self._DomainName)
             )
         if(verbose == True):
             if(reponse['ResponseMetadata']['HTTPStatusCode'] == 200):
