@@ -1,13 +1,15 @@
-_OrganizationId='m-c5593a91faa84f8cad7721c01b0f4b90'
-_DomainName='prodigy.gov.mg'
-_MailAddressFile='emails.csv'
-_Env='WORKMAIL'
-_SenderMailAddress='bruno@prodigy.gov.mg'
+#_OrganizationId='m-c5593a91faa84f8cad7721c01b0f4b90'
+#_DomainName='prodigy.gov.mg'
+#_MailAddressFile='emails.csv'
+#_Env='WORKMAIL'
+#_SenderMailAddress='bruno@prodigy.gov.mg'
+
 _WebMail='https://prodigy-gov-mg.awsapps.com/mail '
 _SMTP_SERVER='smtp.mail.us-east-1.awsapps.com'
 _SMTP_PORT='465'
 _IMAP_SERVER='imap.mail.us-east-1.awsapps.com'
 _IMAP_PORT='993'
+_MailInfoFile='EmailData.txt'
 
 _CorpEmail = """\
     Bonjour,\n
