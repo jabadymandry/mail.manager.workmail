@@ -14,7 +14,9 @@ import send_email
 
 class ManageEmail():
     def __init__(self):
-        self.session = boto3.Session(aws_access_key_id=os.getenv('Secret_USR'), aws_secret_access_key=os.getenv('Secret_PSW'))
+        self.session = boto3.Session(aws_access_key_id=os.getenv('Secret_USR'),
+                                     aws_secret_access_key=os.getenv('Secret_PSW'),
+                                     region_name=os.getenv('AwsRegion'))
         self.workmail_client = self.session.client('workmail')
         self.fic = None
 
