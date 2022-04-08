@@ -1,9 +1,6 @@
 pipeline {
-    agent any
-    options {
-        ansiColor('xterm')
-    }
-
+    agent none
+    
     parameters {
         string(name: 'OrganisationId', defaultValue: 'm-c5593a91faa84f8cad7721c01b0f4b90', description: '* Unique ID organisation on workmail')
         string(name: 'DomainName', defaultValue: '', description: '* - Domain name ex: prodigy.gov.mg')
@@ -17,20 +14,32 @@ pipeline {
     }
     
     environment {
-         SMTP_PASS  = credentials('')
-         GroupAll   = ""
-         SenderEmail = "mailman@${DomainName}"
+        GroupAll   = ""
+        SenderEmail = "mailman@${DomainName}"
+        Secret = credentials('168d1e6b-0697-4f33-ada2-4b9f61dcecd8')
+        SMTP_PASS = credentials('0dbee823-44c5-4e66-8297-92e3fd3c53da')
     }
 
     stages {
         stage('Create email') {
-            steps {
-                script {
-                    File file = new File("emails.csv")
-                    file.write "${FullName},${EmailToCreate},${SendInfoToEmail}" 
-                    println file.text
-                    sh 'python3 create_user.py'
+            agent{
+                docker { 
+                    image 'demisto/boto3py3:1.0.0.28264' 
+                    label 'force-ci'
+                    reuseNode true
+                    //args "-e ${Secret_USR} -e ${Secret_PSW}"
+    
                 }
+            }
+            steps {
+                echo "${Secret}"
+                echo "${FullName},${EmailToCreate},${SendInfoToEmail}"
+                script {
+                    writeFile file:'emails.csv', text:"${FullName},${EmailToCreate},${SendInfoToEmail}"
+                }
+                //sh 'apt-get update && apt-get install python3-pip -y && python3 -m pip install boto3'
+                sh 'printenv'
+                sh 'python3 create_user.py'
             }
         }
 
