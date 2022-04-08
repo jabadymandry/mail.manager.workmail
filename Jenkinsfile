@@ -20,6 +20,7 @@ pipeline {
         Secret = credentials('168d1e6b-0697-4f33-ada2-4b9f61dcecd8')
         SMTP_PASS = credentials('0dbee823-44c5-4e66-8297-92e3fd3c53da')
         SendEmailAddress = 'bruno@prodigy.gov.mg'
+        OrganisationId = "${OrganisationId}"
     }
 
     stages {
@@ -34,12 +35,10 @@ pipeline {
                 }
             }
             steps {
-                echo "${Secret}"
                 echo "${FullName},${EmailToCreate},${SendInfoToEmail}"
                 script {
                     writeFile file:'emails.csv', text:"${FullName},${EmailToCreate},${SendInfoToEmail}"
                 }
-                //sh 'apt-get update && apt-get install python3-pip -y && python3 -m pip install boto3'
                 sh 'printenv'
                 sh 'python3 create_user.py'
             }
