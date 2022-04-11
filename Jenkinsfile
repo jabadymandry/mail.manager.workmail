@@ -88,4 +88,5 @@ pipeline {
             archiveArtifacts artifacts: "${env.WORKSPACE}/terraform/tfplan.txt"
         }
     }*/
+    }
 }
