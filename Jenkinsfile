@@ -57,7 +57,7 @@ pipeline {
                             [$class: 'CascadeChoiceParameter', 
                                 choiceType: 'PT_SINGLE_SELECT', 
                                 description: 'Organisation Id Workmail',
-                                name: 'OrganizationId', 
+                                name: 'Organization_Id', 
                                 referencedParameters: 'DomainName', 
                                 script: 
                                     [$class: 'GroovyScript', 
@@ -92,6 +92,15 @@ pipeline {
 
                         ])
                     ])
+                }
+            }
+        }
+        stage('Create email'){
+            steps{
+                echo "${DomainName} ,${Organisation_Id}"
+                echo "${FullName},${EmailToCreate},${SendInfoToEmail}"
+                script {
+                    writeFile file:'emails.csv', text:"${FullName},${EmailToCreate},${SendInfoToEmail}"
                 }
             }
         }
