@@ -2,9 +2,13 @@ pipeline {
     agent any
     stages {
         stage('Check variable'){
+            agent {
+                label 'forge-ci'
+            }
             steps {
-                echo "${DomainName}"
-                echo "${InfoMailService}"
+                script{
+                    sh 'python GetOrganization.py'
+                }
 
             }
         }
