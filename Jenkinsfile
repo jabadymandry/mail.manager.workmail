@@ -1,19 +1,33 @@
+properties([
+  parameters([
+    [
+      $class: 'ChoiceParameter',
+      choiceType: 'PT_SINGLE_SELECT',
+      name: 'DomainName',
+      script: [
+        $class: 'ScriptlerScript',
+        scriptlerScriptId:'script.groovy'
+      ]
+    ],
+    [
+      $class: 'CascadeChoiceParameter',
+      choiceType: 'PT_SINGLE_SELECT',
+      name: 'ConfigValue',
+      referencedParameters: 'DomainName',
+      script: [
+        $class: 'ScriptlerScript',
+        scriptlerScriptId:'servicemailinfo.groovy',
+        parameters: [
+          [name:'DomainName', value: '$D']
+        ]
+      ]
+   ]
+ ])
+])
+
 pipeline {
     agent none
-    
-    parameters {
-        //string(name: 'Organisation_Id', defaultValue: 'm-c5593a91faa84f8cad7721c01b0f4b90', description: '* Unique ID organisation on workmail')
-        //string(name: 'DomainName', defaultValue: '', description: '* - Domain name ex: prodigy.gov.mg')
-        //string(name: 'AwsRegion', defaultValue: 'us-east-1', description: '* - Region AWS where deployed workmail service')
-        //string(name: 'AwsProfile', defaultValue: 'Default', description: 'AWS profile name to use ')
-        string(name: 'FullName', defaultValue: '', description: '* - Full name do display for email address')
-        string(name: 'EmailToCreate', defaultValue: '', description: '* - Email address to create')
-        string(name: 'SendInfoToEmail', defaultValue: '', description: '* - Send email information (email/password) to mailbox')
-        string(name: 'Group', defaultValue: '', description: 'Ajouter au groupe')
-        booleanParam(name: 'AddToGroup', defaultValue: false, description: 'Check to confirm adding user to group below')
 
-    }
-    
     environment {
         GroupAll   = ""
         SenderEmail = "mailman@${DomainName}"
@@ -25,8 +39,17 @@ pipeline {
         AwsRegion = 'us-east-1'
     }
 
+
+
+
     stages {
-        stage('Create email') {
+        stage('Initialisation'){
+            steps{
+                echo "${params.DomainName}"
+                echo "${params.ConfigValue}"
+            }
+        }
+/*         stage('Create email') {
             agent{
                 docker { 
                     image 'demisto/boto3py3:1.0.0.28264' 
