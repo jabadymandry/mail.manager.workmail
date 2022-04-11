@@ -1,92 +1,89 @@
-properties([
-  parameters([
-    [
-      $class: 'ChoiceParameter',
-      choiceType: 'PT_SINGLE_SELECT',
-      name: 'DomainName',
-      script: [
-        $class: 'ScriptlerScript',
-        scriptlerScriptId:'script.groovy'
-      ]
-    ],
-    [
-      $class: 'CascadeChoiceParameter',
-      choiceType: 'PT_SINGLE_SELECT',
-      name: 'ConfigValue',
-      referencedParameters: 'DomainName',
-      script: [
-        $class: 'ScriptlerScript',
-        scriptlerScriptId:'servicemailinfo.groovy',
-        parameters: [
-          [name:'DomainName', value: '$D']
-        ]
-      ]
-   ]
- ])
-])
-
 pipeline {
-    agent none
-
-    environment {
-        GroupAll   = ""
-        SenderEmail = "mailman@${DomainName}"
-        Secret = credentials('168d1e6b-0697-4f33-ada2-4b9f61dcecd8')
-        SMTP_PASS = credentials('0dbee823-44c5-4e66-8297-92e3fd3c53da')
-        SenderEmailAddress = 'bruno@prodigy.gov.mg'
-        Organisation_Id = 'm-c5593a91faa84f8cad7721c01b0f4b90'
-        DomainName = 'prodigy.gov.mg'
-        AwsRegion = 'us-east-1'
-    }
-
-
-
-
+    agent any
     stages {
-        stage('Initialisation'){
-            steps{
-                echo "${params.DomainName}"
-                echo "${params.ConfigValue}"
-            }
-        }
-/*         stage('Create email') {
-            agent{
-                docker { 
-                    image 'demisto/boto3py3:1.0.0.28264' 
-                    label 'force-ci'
-                    reuseNode true
-                    //args "-e ${Secret_USR} -e ${Secret_PSW}"
-    
-                }
-            }
+        stage('Parameters'){
             steps {
-                //echo "${Organisation_Id}"
-                //echo "${FullName},${EmailToCreate},${SendInfoToEmail}"
                 script {
-                    writeFile file:'emails.csv', text:"${FullName},${EmailToCreate},${SendInfoToEmail}"
+                properties([
+                    parameters([
+                        [$class: 'ChoiceParameter', 
+                            choiceType: 'PT_SINGLE_SELECT', 
+                            description: 'Select the Environemnt from the Dropdown List', 
+                            filterLength: 1, 
+                            filterable: false, 
+                            name: 'Env', 
+                            script: [
+                                $class: 'GroovyScript', 
+                                fallbackScript: [
+                                classpath: [], 
+                                sandbox: false, 
+                                script: 
+                                    "return['Could not get The environemnts']"
+                                ], 
+                                script: [
+                                    classpath: [], 
+                                    sandbox: false, 
+                                    script: 
+                                    "return['dev','stage','prod']"
+                                ]
+                            ]
+                        ],
+                        [$class: 'CascadeChoiceParameter', 
+                            choiceType: 'PT_SINGLE_SELECT', 
+                            description: 'Select the AMI from the Dropdown List',
+                            name: 'AMI List', 
+                            referencedParameters: 'Env', 
+                            script: 
+                            [$class: 'GroovyScript', 
+                                fallbackScript: [
+                                classpath: [], 
+                                sandbox: false, 
+                                script: "return['Could not get Environment from Env Param']"
+                                ], 
+                                script: [
+                                    classpath: [], 
+                                    sandbox: false, 
+                                    script: '''
+                                        if (Env.equals("dev")){
+                                            return["ami-sd2345sd", "ami-asdf245sdf", "ami-asdf3245sd"]
+                                        }
+                                        else if(Env.equals("stage")){
+                                            return["ami-sd34sdf", "ami-sdf345sdc", "ami-sdf34sdf"]
+                                        }
+                                        else if(Env.equals("prod")){
+                                            return["ami-sdf34sdf", "ami-sdf34ds", "ami-sdf3sf3"]
+                                        }
+                                    '''
+                                    ] 
+                            ]
+                        ],
+                        [$class: 'DynamicReferenceParameter', 
+                            choiceType: 'ET_ORDERED_LIST', 
+                            description: 'Select the  AMI based on the following information', 
+                            name: 'Image Information', 
+                            referencedParameters: 'Env', 
+                            script: 
+                                [$class: 'GroovyScript', 
+                                script: 'return["Could not get AMi Information"]', 
+                                script: [
+                                    script: '''
+                                        if (Env.equals("dev")){
+                                            return["ami-sd2345sd:  AMI with Java", "ami-asdf245sdf: AMI with Python", "ami-asdf3245sd: AMI with Groovy"]
+                                        }
+                                        else if(Env.equals("stage")){
+                                            return["ami-sd34sdf:  AMI with Java", "ami-sdf345sdc: AMI with Python", "ami-sdf34sdf: AMI with Groovy"]
+                                        }
+                                        else if(Env.equals("prod")){
+                                            return["ami-sdf34sdf:  AMI with Java", "ami-sdf34ds: AMI with Python", "ami-sdf3sf3: AMI with Groovy"]
+                                        }
+                                    '''
+                                    ]
+                                ]
+                        ]
+                    ])
+                ])
                 }
-                //sh 'printenv'
-                sh 'python3 create_user.py'
             }
         }
-
-        stage('Add to group') {
-            when {
-                expression {
-                    params.AddToGroup
-                }
-            }
-
-            steps {
-                echo "Adding ${UserToCreate} to group ${Group}"
-            }
-        }
-    }
-
-/*    post {
-        always {
-            archiveArtifacts artifacts: "${env.WORKSPACE}/terraform/tfplan.txt"
-        }
-    }*/
-    }
+    }   
 }
