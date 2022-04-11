@@ -13,4 +13,4 @@ def GetOrganizationInfo(p="Id"):
             data.append(info['DefaultMailDomain'])
     return data
 
-GetOrganizationInfo(p="Domain")
+print(GetOrganizationInfo(p="Domain"))
