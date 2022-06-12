@@ -7,7 +7,7 @@ pipeline {
         //string(name: 'AwsRegion', defaultValue: 'us-east-1', description: '* - Region AWS where deployed workmail service')
         //string(name: 'AwsProfile', defaultValue: 'Default', description: 'AWS profile name to use ')
         string(name: 'FullName', defaultValue: '', description: '* - Full name do display for email address')
-        string(name: 'EmailToCreate', defaultValue: '', description: '* - Email address to create')
+        string(name: 'EmailToCreate', defaultValue: '', description: '* - Email address to create, sans @prodigy.gov.mg')
         string(name: 'SendInfoToEmail', defaultValue: '', description: '* - Send email information (email/password) to mailbox')
         string(name: 'Group', defaultValue: '', description: 'Ajouter au groupe')
         booleanParam(name: 'AddToGroup', defaultValue: false, description: 'Check to confirm adding user to group below')
@@ -55,7 +55,7 @@ pipeline {
             }
 
             steps {
-                echo "Adding ${UserToCreate} to group ${Group}"
+                echo "Adding ${EmailToCreate} to group ${Group}"
             }
         }
     }
