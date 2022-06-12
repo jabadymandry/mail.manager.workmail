@@ -30,7 +30,7 @@ pipeline {
             agent{
                 docker { 
                     image 'demisto/boto3py3:1.0.0.28264' 
-                    label 'force-ci'
+                    label 'forge-ci'
                     reuseNode true
                     //args "-e ${Secret_USR} -e ${Secret_PSW}"
     
