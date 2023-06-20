@@ -19,9 +19,9 @@ pipeline {
         SenderEmail = "mailman@${DomainName}"
         Secret = credentials('168d1e6b-0697-4f33-ada2-4b9f61dcecd8')
         SMTP_PASS = credentials('0dbee823-44c5-4e66-8297-92e3fd3c53da')
-        SenderEmailAddress = 'bruno@prodigy.gov.mg'
-        Organisation_Id = 'm-c5593a91faa84f8cad7721c01b0f4b90'
-        DomainName = 'prodigy.gov.mg'
+        SenderEmailAddress = 'bruno@test.test.mg'
+        Organisation_Id = 'm-c5593a91faa84f8cad7721c01b0fhr0'
+        DomainName = 'test.test.mg'
         AwsRegion = 'us-east-1'
     }
 
