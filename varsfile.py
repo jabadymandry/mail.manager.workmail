@@ -4,7 +4,7 @@ _MailAddressFile='emails.csv'
 #_Env='WORKMAIL'
 #_SenderMailAddress='bruno@prodigy.gov.mg'
 
-_WebMail='https://prodigy-gov-mg.awsapps.com/mail '
+_WebMail='https://test-test-mg.awsapps.com/mail '
 _SMTP_SERVER='smtp.mail.us-east-1.awsapps.com'
 _SMTP_PORT='465'
 _IMAP_SERVER='imap.mail.us-east-1.awsapps.com'
