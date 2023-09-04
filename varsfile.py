@@ -1,8 +1,8 @@
-#_OrganizationId='m-c5593a91faa84f8cad7721c01b0f4b90'
-#_DomainName='prodigy.gov.mg'
+#_OrganizationId='m-93a91faa84f8cad77dsfsfdsss21c01b0f4b90'
+#_DomainName='xx.example.tld'
 _MailAddressFile='emails.csv'
 #_Env='WORKMAIL'
-#_SenderMailAddress='bruno@prodigy.gov.mg'
+#_SenderMailAddress='xxxx@xx.example.tld'
 
 _WebMail='https://test-test-mg.awsapps.com/mail '
 _SMTP_SERVER='smtp.mail.us-east-1.awsapps.com'
